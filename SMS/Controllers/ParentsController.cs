@@ -2,119 +2,118 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
 using SMS.Models;
 
 namespace SMS.Controllers
 {
-    public class ParentsController : ApiController
+    public class ParentsController : Controller
     {
         private SMSEntities db = new SMSEntities();
 
-        // GET: api/Parents
-        public IQueryable<Parent> GetParents()
+        // GET: Parents
+        public async Task<ActionResult> Index()
         {
-            return db.Parents;
+            return View(await db.Parents.ToListAsync());
         }
 
-        // GET: api/Parents/5
-        [ResponseType(typeof(Parent))]
-        public async Task<IHttpActionResult> GetParent(string id)
+        // GET: Parents/Details/5
+        public async Task<ActionResult> Details(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Parent parent = await db.Parents.FindAsync(id);
             if (parent == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(parent);
+            return View(parent);
         }
 
-        // PUT: api/Parents/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutParent(string id, Parent parent)
+        // GET: Parents/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            return View();
+        }
 
-            if (id != parent.parent_id)
+        // POST: Parents/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create([Bind(Include = "parent_id,parent_name,parent_surname,id_no")] Parent parent)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            db.Entry(parent).State = EntityState.Modified;
-
-            try
-            {
+                db.Parents.Add(parent);
                 await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ParentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("Index");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return View(parent);
         }
 
-        // POST: api/Parents
-        [ResponseType(typeof(Parent))]
-        public async Task<IHttpActionResult> PostParent(Parent parent)
+        // GET: Parents/Edit/5
+        public async Task<ActionResult> Edit(string id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.Parents.Add(parent);
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ParentExists(parent.parent_id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = parent.parent_id }, parent);
-        }
-
-        // DELETE: api/Parents/5
-        [ResponseType(typeof(Parent))]
-        public async Task<IHttpActionResult> DeleteParent(string id)
-        {
             Parent parent = await db.Parents.FindAsync(id);
             if (parent == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
+            return View(parent);
+        }
 
+        // POST: Parents/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "parent_id,parent_name,parent_surname,id_no")] Parent parent)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(parent).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(parent);
+        }
+
+        // GET: Parents/Delete/5
+        public async Task<ActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Parent parent = await db.Parents.FindAsync(id);
+            if (parent == null)
+            {
+                return HttpNotFound();
+            }
+            return View(parent);
+        }
+
+        // POST: Parents/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+            Parent parent = await db.Parents.FindAsync(id);
             db.Parents.Remove(parent);
             await db.SaveChangesAsync();
-
-            return Ok(parent);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -124,11 +123,6 @@ namespace SMS.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool ParentExists(string id)
-        {
-            return db.Parents.Count(e => e.parent_id == id) > 0;
         }
     }
 }

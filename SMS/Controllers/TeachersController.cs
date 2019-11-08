@@ -2,119 +2,118 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
 using SMS.Models;
 
 namespace SMS.Controllers
 {
-    public class TeachersController : ApiController
+    public class TeachersController : Controller
     {
         private SMSEntities db = new SMSEntities();
 
-        // GET: api/Teachers
-        public IQueryable<Teacher> GetTeachers()
+        // GET: Teachers
+        public async Task<ActionResult> Index()
         {
-            return db.Teachers;
+            return View(await db.Teachers.ToListAsync());
         }
 
-        // GET: api/Teachers/5
-        [ResponseType(typeof(Teacher))]
-        public async Task<IHttpActionResult> GetTeacher(string id)
+        // GET: Teachers/Details/5
+        public async Task<ActionResult> Details(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Teacher teacher = await db.Teachers.FindAsync(id);
             if (teacher == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(teacher);
+            return View(teacher);
         }
 
-        // PUT: api/Teachers/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutTeacher(string id, Teacher teacher)
+        // GET: Teachers/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            return View();
+        }
 
-            if (id != teacher.teacher_id)
+        // POST: Teachers/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create([Bind(Include = "teacher_id,teacher_name,teacher_surname")] Teacher teacher)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            db.Entry(teacher).State = EntityState.Modified;
-
-            try
-            {
+                db.Teachers.Add(teacher);
                 await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TeacherExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("Index");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return View(teacher);
         }
 
-        // POST: api/Teachers
-        [ResponseType(typeof(Teacher))]
-        public async Task<IHttpActionResult> PostTeacher(Teacher teacher)
+        // GET: Teachers/Edit/5
+        public async Task<ActionResult> Edit(string id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.Teachers.Add(teacher);
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (TeacherExists(teacher.teacher_id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = teacher.teacher_id }, teacher);
-        }
-
-        // DELETE: api/Teachers/5
-        [ResponseType(typeof(Teacher))]
-        public async Task<IHttpActionResult> DeleteTeacher(string id)
-        {
             Teacher teacher = await db.Teachers.FindAsync(id);
             if (teacher == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
+            return View(teacher);
+        }
 
+        // POST: Teachers/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "teacher_id,teacher_name,teacher_surname")] Teacher teacher)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(teacher).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(teacher);
+        }
+
+        // GET: Teachers/Delete/5
+        public async Task<ActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Teacher teacher = await db.Teachers.FindAsync(id);
+            if (teacher == null)
+            {
+                return HttpNotFound();
+            }
+            return View(teacher);
+        }
+
+        // POST: Teachers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+            Teacher teacher = await db.Teachers.FindAsync(id);
             db.Teachers.Remove(teacher);
             await db.SaveChangesAsync();
-
-            return Ok(teacher);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -124,11 +123,6 @@ namespace SMS.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool TeacherExists(string id)
-        {
-            return db.Teachers.Count(e => e.teacher_id == id) > 0;
         }
     }
 }

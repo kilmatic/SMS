@@ -2,119 +2,118 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
 using SMS.Models;
 
 namespace SMS.Controllers
 {
-    public class StudentsController : ApiController
+    public class StudentsController : Controller
     {
         private SMSEntities db = new SMSEntities();
 
-        // GET: api/Students
-        public IQueryable<Student> GetStudents()
+        // GET: Students
+        public async Task<ActionResult> Index()
         {
-            return db.Students;
+            return View(await db.Students.ToListAsync());
         }
 
-        // GET: api/Students/5
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> GetStudent(string id)
+        // GET: Students/Details/5
+        public async Task<ActionResult> Details(string id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Student student = await db.Students.FindAsync(id);
             if (student == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(student);
+            return View(student);
         }
 
-        // PUT: api/Students/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutStudent(string id, Student student)
+        // GET: Students/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            return View();
+        }
 
-            if (id != student.student_id)
+        // POST: Students/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create([Bind(Include = "student_id,student_name,student_surname,id_no")] Student student)
+        {
+            if (ModelState.IsValid)
             {
-                return BadRequest();
-            }
-
-            db.Entry(student).State = EntityState.Modified;
-
-            try
-            {
+                db.Students.Add(student);
                 await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToAction("Index");
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return View(student);
         }
 
-        // POST: api/Students
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> PostStudent(Student student)
+        // GET: Students/Edit/5
+        public async Task<ActionResult> Edit(string id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                return BadRequest(ModelState);
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
-            db.Students.Add(student);
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (StudentExists(student.student_id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = student.student_id }, student);
-        }
-
-        // DELETE: api/Students/5
-        [ResponseType(typeof(Student))]
-        public async Task<IHttpActionResult> DeleteStudent(string id)
-        {
             Student student = await db.Students.FindAsync(id);
             if (student == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
+            return View(student);
+        }
 
+        // POST: Students/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit([Bind(Include = "student_id,student_name,student_surname,id_no")] Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(student).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(student);
+        }
+
+        // GET: Students/Delete/5
+        public async Task<ActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Student student = await db.Students.FindAsync(id);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+            return View(student);
+        }
+
+        // POST: Students/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteConfirmed(string id)
+        {
+            Student student = await db.Students.FindAsync(id);
             db.Students.Remove(student);
             await db.SaveChangesAsync();
-
-            return Ok(student);
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
@@ -124,11 +123,6 @@ namespace SMS.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool StudentExists(string id)
-        {
-            return db.Students.Count(e => e.student_id == id) > 0;
         }
     }
 }
