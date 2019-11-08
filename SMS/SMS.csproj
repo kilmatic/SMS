@@ -397,16 +397,14 @@
     <Content Include="Views\Teachers\Details.cshtml" />
     <Content Include="Views\Teachers\Edit.cshtml" />
     <Content Include="Views\Teachers\Index.cshtml" />
+    <Content Include="Views\Parents\Index.cshtml" />
     <Content Include="Views\Parents\Create.cshtml" />
     <Content Include="Views\Parents\Delete.cshtml" />
     <Content Include="Views\Parents\Details.cshtml" />
     <Content Include="Views\Parents\Edit.cshtml" />
-    <Content Include="Views\Parents\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Student\" />
-    <Folder Include="Views\Teacher\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
