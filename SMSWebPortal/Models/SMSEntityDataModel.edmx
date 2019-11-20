@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="admin_id" />
+          </Key>
+          <Property Name="admin_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="admin_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Classes">
+          <Key>
+            <PropertyRef Name="class_id" />
+          </Key>
+          <Property Name="class_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="grade_id" Type="nvarchar" MaxLength="32" />
+          <Property Name="subject_id" Type="nvarchar" MaxLength="32" />
+          <Property Name="teacher_id" Type="nvarchar" MaxLength="32" />
+          <Property Name="student_id" Type="nvarchar" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="Fees">
+          <Key>
+            <PropertyRef Name="fee_id" />
+          </Key>
+          <Property Name="fee_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="balance" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="grade_id" />
+          </Key>
+          <Property Name="grade_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="grade" Type="int" />
+        </EntityType>
+        <EntityType Name="Parent">
+          <Key>
+            <PropertyRef Name="parent_id" />
+          </Key>
+          <Property Name="parent_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="parent_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="parent_surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_no" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Schools">
+          <Key>
+            <PropertyRef Name="school_id" />
+          </Key>
+          <Property Name="school_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="schoole_name" Type="nvarchar" MaxLength="250" />
+          <Property Name="district" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="student_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="student_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="student_surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id_no" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subjects">
+          <Key>
+            <PropertyRef Name="subject_id" />
+          </Key>
+          <Property Name="subject_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="subject_name" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="test" Type="int" />
+          <Property Name="assignment" Type="int" />
+          <Property Name="exam" Type="int" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="teacher_id" />
+          </Key>
+          <Property Name="teacher_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="teacher_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="teacher_surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tertiary">
+          <Key>
+            <PropertyRef Name="tertiary_id" />
+          </Key>
+          <Property Name="tertiary_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="institution" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="aps" Type="int" />
+        </EntityType>
+        <EntityType Name="Timetable">
+          <Key>
+            <PropertyRef Name="timetable_id" />
+          </Key>
+          <Property Name="timetable_id" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="day_of_week" Type="date" />
+          <Property Name="hour_of_day" Type="time" Precision="7" />
+        </EntityType>
+        <EntityContainer Name="SMSModelStoreContainer">
+          <EntitySet Name="Administrator" EntityType="Self.Administrator" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fees" EntityType="Self.Fees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grade" EntityType="Self.Grade" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parent" EntityType="Self.Parent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schools" EntityType="Self.Schools" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subjects" EntityType="Self.Subjects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tertiary" EntityType="Self.Tertiary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Timetable" EntityType="Self.Timetable" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="admin_id" />
+          </Key>
+          <Property Name="admin_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="admin_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="class_id" />
+          </Key>
+          <Property Name="class_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="grade_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="subject_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="teacher_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="student_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Fee">
+          <Key>
+            <PropertyRef Name="fee_id" />
+          </Key>
+          <Property Name="fee_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="balance" Type="Decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="grade_id" />
+          </Key>
+          <Property Name="grade_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="grade1" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Parent">
+          <Key>
+            <PropertyRef Name="parent_id" />
+          </Key>
+          <Property Name="parent_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="parent_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="parent_surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_no" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="school_id" />
+          </Key>
+          <Property Name="school_id" Type="Guid" Nullable="false" />
+          <Property Name="schoole_name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="district" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="student_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="student_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="student_surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id_no" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="subject_id" />
+          </Key>
+          <Property Name="subject_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="subject_name" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="test" Type="Int32" />
+          <Property Name="assignment" Type="Int32" />
+          <Property Name="exam" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="teacher_id" />
+          </Key>
+          <Property Name="teacher_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="teacher_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="teacher_surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tertiary">
+          <Key>
+            <PropertyRef Name="tertiary_id" />
+          </Key>
+          <Property Name="tertiary_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="institution" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="aps" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Timetable">
+          <Key>
+            <PropertyRef Name="timetable_id" />
+          </Key>
+          <Property Name="timetable_id" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="day_of_week" Type="DateTime" Precision="0" />
+          <Property Name="hour_of_day" Type="Time" Precision="7" />
+        </EntityType>
+        <EntityContainer Name="SMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administrators" EntityType="Self.Administrator" />
+          <EntitySet Name="Classes" EntityType="Self.Class" />
+          <EntitySet Name="Fees" EntityType="Self.Fee" />
+          <EntitySet Name="Grades" EntityType="Self.Grade" />
+          <EntitySet Name="Parents" EntityType="Self.Parent" />
+          <EntitySet Name="Schools" EntityType="Self.School" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="Subjects" EntityType="Self.Subject" />
+          <EntitySet Name="Teachers" EntityType="Self.Teacher" />
+          <EntitySet Name="Tertiaries" EntityType="Self.Tertiary" />
+          <EntitySet Name="Timetables" EntityType="Self.Timetable" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SMSModelStoreContainer" CdmEntityContainer="SMSEntities">
+          <EntitySetMapping Name="Administrators">
+            <EntityTypeMapping TypeName="SMSModel.Administrator">
+              <MappingFragment StoreEntitySet="Administrator">
+                <ScalarProperty Name="admin_id" ColumnName="admin_id" />
+                <ScalarProperty Name="admin_name" ColumnName="admin_name" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="SMSModel.Class">
+              <MappingFragment StoreEntitySet="Classes">
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="grade_id" ColumnName="grade_id" />
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fees">
+            <EntityTypeMapping TypeName="SMSModel.Fee">
+              <MappingFragment StoreEntitySet="Fees">
+                <ScalarProperty Name="fee_id" ColumnName="fee_id" />
+                <ScalarProperty Name="balance" ColumnName="balance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grades">
+            <EntityTypeMapping TypeName="SMSModel.Grade">
+              <MappingFragment StoreEntitySet="Grade">
+                <ScalarProperty Name="grade_id" ColumnName="grade_id" />
+                <ScalarProperty Name="grade1" ColumnName="grade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parents">
+            <EntityTypeMapping TypeName="SMSModel.Parent">
+              <MappingFragment StoreEntitySet="Parent">
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="parent_name" ColumnName="parent_name" />
+                <ScalarProperty Name="parent_surname" ColumnName="parent_surname" />
+                <ScalarProperty Name="id_no" ColumnName="id_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schools">
+            <EntityTypeMapping TypeName="SMSModel.School">
+              <MappingFragment StoreEntitySet="Schools">
+                <ScalarProperty Name="district" ColumnName="district" />
+                <ScalarProperty Name="school_id" ColumnName="school_id" />
+                <ScalarProperty Name="schoole_name" ColumnName="schoole_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="SMSModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="student_name" ColumnName="student_name" />
+                <ScalarProperty Name="student_surname" ColumnName="student_surname" />
+                <ScalarProperty Name="id_no" ColumnName="id_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subjects">
+            <EntityTypeMapping TypeName="SMSModel.Subject">
+              <MappingFragment StoreEntitySet="Subjects">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="subject_name" ColumnName="subject_name" />
+                <ScalarProperty Name="test" ColumnName="test" />
+                <ScalarProperty Name="assignment" ColumnName="assignment" />
+                <ScalarProperty Name="exam" ColumnName="exam" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teachers">
+            <EntityTypeMapping TypeName="SMSModel.Teacher">
+              <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="teacher_name" ColumnName="teacher_name" />
+                <ScalarProperty Name="teacher_surname" ColumnName="teacher_surname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tertiaries">
+            <EntityTypeMapping TypeName="SMSModel.Tertiary">
+              <MappingFragment StoreEntitySet="Tertiary">
+                <ScalarProperty Name="tertiary_id" ColumnName="tertiary_id" />
+                <ScalarProperty Name="institution" ColumnName="institution" />
+                <ScalarProperty Name="aps" ColumnName="aps" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Timetables">
+            <EntityTypeMapping TypeName="SMSModel.Timetable">
+              <MappingFragment StoreEntitySet="Timetable">
+                <ScalarProperty Name="timetable_id" ColumnName="timetable_id" />
+                <ScalarProperty Name="day_of_week" ColumnName="day_of_week" />
+                <ScalarProperty Name="hour_of_day" ColumnName="hour_of_day" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

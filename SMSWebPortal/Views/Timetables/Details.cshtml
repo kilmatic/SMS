@@ -1,0 +1,34 @@
+﻿@model SMSWebPortal.Models.Timetable
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Timetable</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.day_of_week)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.day_of_week)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.hour_of_day)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.hour_of_day)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.timetable_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
